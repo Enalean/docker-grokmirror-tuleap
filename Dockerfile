@@ -18,32 +18,26 @@ RUN yum install -y --enablerepo=rpmforge-extras python-grokmirror \
     tuleap-gitolite-membership \
     ; yum clean all
 
-COPY id_rsa_insecure /var/lib/gitolite/.ssh/id_rsa
-COPY id_rsa_insecure.pub /var/lib/gitolite/.ssh/id_rsa.pub
-RUN chown -R gitolite:gitolite /var/lib/gitolite/.ssh
+# Make a ssh key
+RUN service sshd start
 
 # Setup gitolite
-USER gitolite
-#RUN ssh-keygen -N '' -f /var/lib/gitolite/.ssh/id_rsa
-RUN USER=gitolite HOME=/var/lib/gitolite gitolite setup -pk /var/lib/gitolite/.ssh/id_rsa.pub
-RUN rm -rf /var/lib/gitolite/repositories/*
-COPY gitolite.rc /var/lib/gitolite/.gitolite.rc
-COPY tuleap-gitolite-membership.ini /etc/tuleap-gitolite-membership.ini
+COPY gitolite.rc /root/.gitolite.rc
 
-RUN gitolite writable @all off "This is git mirror, no write allowed"
+# Setup tuleap-gitolite-membership
+COPY tuleap-gitolite-membership.ini /etc/tuleap-gitolite-membership.ini
 
 # Grokmirror
 COPY repos.conf /etc/grokmirror/repos.conf
 
 # Fix all ownership
-USER root
 RUN mkdir /var/log/grokmirror /var/lock/grokmirror
-RUN chown -R gitolite:gitolite /var/lib/gitolite/.ssh /etc/tuleap-gitolite-membership.ini /etc/grokmirror /var/log/grokmirror /var/lock/grokmirror /var/lib/gitolite/.gitolite.rc
-RUN chmod 0700 /var/lib/gitolite/.ssh /var/log/grokmirror /var/lock/grokmirror
-RUN chmod 0600 /var/lib/gitolite/.ssh/* /etc/tuleap-gitolite-membership.ini
+RUN chown -R gitolite:gitolite /etc/tuleap-gitolite-membership.ini /etc/grokmirror /var/log/grokmirror /var/lock/grokmirror
 
 COPY update_gladmin.sh /usr/local/bin/update_gladmin.sh
 COPY run.sh /run.sh
 COPY start_grokpull.sh /start_grokpull.sh
+
+VOLUME [ "/var/lib/gitolite" ]
 
 ENTRYPOINT [ "/run.sh" ]

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 TULEAP_HOST=$1
 
