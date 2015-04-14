@@ -189,6 +189,8 @@
 
 $UNSAFE_PATT = qr();
 
+$ENV{PATH} = "/opt/rh/git19/root/usr/bin:$ENV{PATH}";
+
 # ------------------------------------------------------------------------------
 # per perl rules, this should be the last line in such a file:
 1;
