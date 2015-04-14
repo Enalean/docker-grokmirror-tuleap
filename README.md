@@ -29,18 +29,9 @@ Create a data container for your mirror:
 
 Then initialize data:
 
-    docker run -ti --rm x--volumes-from mirror1-data enalean/grokmirror-tuleap red.tuleap-aio-dev.dev.docker welcome0 1
-
-Where:
-
-* red.tuleap-aio-dev.dev.docker is the hostname of your Tuleap server
-* welcome0 is the password of this user
-* 1 is the ID of the mirror
+    docker run -ti --rm --volumes-from mirror1-data enalean/grokmirror-tuleap
 
 A public ssh key is displayed on terminal at first run, publish it for the
 mirror on Tuleap.
 
 Wait for a minute of two so the key is dumped on the FS.
-
-
-
