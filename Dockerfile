@@ -1,6 +1,4 @@
-FROM centos:centos6
-
-MAINTAINER Manuel Vacelet <manuel.vacelet@enalean.com>
+FROM centos:6
 
 ## Install dependencies ##
 COPY Tuleap.repo /etc/yum.repos.d/Tuleap.repo
