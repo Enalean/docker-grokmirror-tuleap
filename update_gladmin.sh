@@ -6,7 +6,7 @@ gitname="`basename $git`"
 if [ $gitname = gitolite-admin.git ]
 then
   cd $git
-  export GL_BINDIR=/usr/bin
-  export GL_LIBDIR=/usr/share/gitolite3
-  $HOME/.gitolite/hooks/gitolite-admin/post-update
+  export GL_BINDIR=/usr/share/gitolite3
+  export GL_LIBDIR=$GL_BINDIR
+  $HOME/.gitolite/hooks/gitolite-admin/post-update refs/heads/master
 fi
